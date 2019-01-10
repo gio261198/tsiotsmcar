@@ -10,8 +10,11 @@ var connection = mysql.createConnection({
     database: 'smart_cars'
 })
 router.use(bodyParser.json());
-router.get('/', function(req, res) {
-    connection.query('SELECT * FROM measurements', function(err, results) {
+router.get('/:plate&from=:startTime&to=:endTime', function(req, res) {
+    let start=req.params.startTime;
+    let end=req.params.endTime;
+    let plate=req.params.plate;
+    connection.query('SELECT * FROM measurements WHERE(car_id)=?',plate, function(err, results) {
         if(err){
             res.statusCode=404;
             res.send("C'è stato un problema con la richiesta al database")
